@@ -23,7 +23,7 @@
               <Icon type="ios-paper" />
               <span>公告管理</span>
             </template>
-            <MenuItem name="3-1">公告管理</MenuItem>
+            <router-link to="/announcement"><MenuItem name="3-1">公告管理</MenuItem></router-link>
           </Submenu>
           <Submenu name="4">
             <template slot="title">

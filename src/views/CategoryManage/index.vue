@@ -7,13 +7,13 @@
       <BreadcrumbItem>课程类别管理</BreadcrumbItem>
     </Breadcrumb>
     <!--操作按钮-->
-    <Row  style="margin: 20px">
+    <Row  style="margin-top: 20px;background:#eee;padding: 20px">
       <Col span="2">
         <Button type="primary" icon="ios-cloud-done-outline" @click="formItem.input = '';addModelState = true">添加类别</Button>
       </Col>
     </Row>
     <!--表格-->
-    <Row style="margin: 20px">
+    <Row style="margin-top: 20px">
       <Col span="24">
         <Table border :columns="categoryTable" :data="$store.state.categoryManage.categoryList">
           <template slot-scope="{ row }" slot="name">
@@ -26,7 +26,6 @@
         </Table>
       </Col>
     </Row>
-
     <!--新增弹框-->
     <Modal title="类别" v-model="addModelState">
       <p slot="header" style="text-align:center">
@@ -62,7 +61,6 @@
         <Button type="info" size="large" long :loading="this.$store.state.categoryManage.saveLoding" @click="updateSave">修改类别</Button>
       </div>
     </Modal>
-
   </Row>
 </template>
 
