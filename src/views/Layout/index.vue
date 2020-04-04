@@ -8,30 +8,37 @@
               <Icon type="ios-people" />
               <span>账号管理</span>
             </template>
-            <MenuItem name="1-1">学生账号管理</MenuItem>
-            <MenuItem name="1-2">教师账号管理</MenuItem>
+            <router-link to="/admin/student"><MenuItem name="1-1">学生账号管理</MenuItem></router-link>
+            <router-link to="/admin/teacher"><MenuItem name="1-2">教师账号管理</MenuItem></router-link>
           </Submenu>
           <Submenu name="2">
             <template slot="title">
               <Icon type="ios-photos" />
               <span>审核管理</span>
             </template>
-            <MenuItem name="2-1">课程审核</MenuItem>
+            <router-link to="/admin/course"><MenuItem name="2-1">课程审核</MenuItem></router-link>
           </Submenu>
           <Submenu name="3">
             <template slot="title">
               <Icon type="ios-paper" />
               <span>公告管理</span>
             </template>
-            <router-link to="/announcement"><MenuItem name="3-1">公告管理</MenuItem></router-link>
+            <router-link to="/admin/announcement"><MenuItem name="3-1">公告管理</MenuItem></router-link>
           </Submenu>
           <Submenu name="4">
             <template slot="title">
               <Icon type="ios-people" />
               <span>教学管理</span>
             </template>
-            <router-link to="/category"><MenuItem name="4-1">课程类别管理</MenuItem></router-link>
-            <MenuItem name="4-2">教师账号管理</MenuItem>
+            <router-link to="/admin/category"><MenuItem name="4-1">课程类别管理</MenuItem></router-link>
+          </Submenu>
+          <Submenu name="5">
+            <template slot="title">
+              <Icon type="ios-people" />
+              <span>基础管理</span>
+            </template>
+            <router-link to="/admin/department"><MenuItem name="5-1">院系管理</MenuItem></router-link>
+            <router-link to="/admin/specialty"><MenuItem name="5-2">专业管理</MenuItem></router-link>
           </Submenu>
         </Menu>
       </Sider>
@@ -42,14 +49,11 @@
           <Dropdown style="float: right;margin-right: 40px">
             <a href="javascript:void(0)">
               <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
+              <span>{{$store.state.loginManage.userName}}</span>
               <Icon type="ios-arrow-down"></Icon>
             </a>
             <DropdownMenu slot="list">
-              <DropdownItem>驴打滚</DropdownItem>
-              <DropdownItem>炸酱面</DropdownItem>
-              <DropdownItem>豆汁儿</DropdownItem>
-              <DropdownItem>冰糖葫芦</DropdownItem>
-              <DropdownItem>北京烤鸭</DropdownItem>
+              <DropdownItem><span @click="logout">退出</span></DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </Header>
@@ -86,6 +90,12 @@
       methods: {
         collapsedSider () {
           this.$refs.side1.toggleCollapse();
+        },
+        logout() {
+          this.$store.dispatch("loginManage/doLogout").then(() => {
+            this.$Notice.info({title:"退出成功", desc: ''})
+            this.$router.push("/")
+          })
         }
       }
     }
