@@ -13,10 +13,11 @@
         <Col span="2">
           <Button type="primary" icon="ios-cloud-done-outline" @click="cleanFormItem();addModelState = true">添加账号</Button>
         </Col>
-        <Col span="6">
-          <label>
-            <Input search placeholder="Enter something..." />
-          </label>
+        <Col span="4">
+          <Input v-model="selectContent" placeholder="输入学生姓名"/>
+        </Col>
+        <Col span="2" style="margin-left: 10px">
+          <Button type="primary" @click="search">查找</Button>
         </Col>
       </Row>
       <!--表格-->
@@ -144,6 +145,7 @@
       data () {
         return {
           currentPage: 1,
+          selectContent: '',
           formItem: {
             userName: '',
             name: '',
@@ -214,12 +216,20 @@
         this.$store.dispatch("studentAccountManage/doQuerySpecialtyToSelectList")
       },
       methods: {
-        handleSelectAll (status) {
-          this.$refs.selection.selectAll(status);
+        search() {
+          if(this.selectContent.trim() == "") {
+            this.$store.dispatch("studentAccountManage/doQueryAll", 1)
+          } else {
+            this.$store.dispatch("studentAccountManage/doQueryCondition", {"currentPage": 1, "name": this.selectContent.trim()})
+          }
         },
         nextPage(index) {
           // 搜索条件为空，则查询所有
-          this.$store.dispatch("studentAccountManage/doQueryAll", index)
+          if(this.selectContent.trim() == "") {
+            this.$store.dispatch("studentAccountManage/doQueryAll", index)
+          } else {
+            this.$store.dispatch("studentAccountManage/doQueryCondition", {"currentPage": index, "name": this.selectContent.trim()})
+          }
           this.currentPage = index
         },
         remove(index) {

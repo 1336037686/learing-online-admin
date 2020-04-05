@@ -2,6 +2,7 @@
 import axios from "axios";
 import { Notice } from 'view-design';
 import moment from 'moment'
+import store from "../index";
 
 const state = {
   announcementData: {
@@ -60,7 +61,7 @@ const actions = {
    */
   async doSave({dispatch, commit}, data) {
     commit("SET_SAVE_LODING", true)
-    await axios.post("/api/v1/announcement/save", {"body":{"data": data}}).then(response => {
+    await axios.post("/api/v1/announcement/save", {"head": {"token": store.state.loginManage.token}, "body":{"data": data}}).then(response => {
       if(response.data.head.responseCode != "200") {
         Notice.error({title: response.data.head.message , desc: ''});
       } else {
@@ -81,7 +82,7 @@ const actions = {
    * @returns {Promise<void>}
    */
   async doRemove({dispatch, commit}, data) {
-    await axios.delete("/api/v1/announcement/remove", {data: {"body":{ "data": {"id" : data.id}}}}).then(response => {
+    await axios.delete("/api/v1/announcement/remove", {data: {"head": {"token": store.state.loginManage.token}, "body":{ "data": {"id" : data.id}}}}).then(response => {
       if(response.data.head.responseCode != "200") {
         Notice.error({title: response.data.head.message , desc: ''});
       } else {

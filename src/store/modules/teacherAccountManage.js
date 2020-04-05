@@ -2,6 +2,7 @@
 import axios from "axios";
 import { Notice } from 'view-design';
 import moment from 'moment'
+import store from "../index";
 
 const state = {
   departmentList: [],
@@ -54,6 +55,37 @@ const actions = {
   },
 
   /**
+   * 条件查找教师账号记录
+   * @param commit
+   * @returns {Promise<void>}
+   */
+  async doQueryCondition({dispatch, state, commit}, data) {
+    // 查找专业
+    await dispatch("doQueryDeparmentToSelectList")
+    // 查找教师账号
+    await axios.post("/api/v1/teacher/condition", {"body": {"data": {"currentPage": data.currentPage, "name": data.name, "size": state.size}}}).then(response => {
+      if(response.data.head.responseCode !== "200") {
+        this.$Notice.error({title: response.data.head.message , desc: ''});
+        return;
+      }
+      // 时间转换 yyyy-MM-dd
+      let list = response.data.body.data.pageInfo.list
+      // 转化专业信息
+      for(let i = 0; i < list.length; i++) {
+        list[i].startTime = moment(list[i].startTime).format('YYYY-MM-DD')
+        state.departmentList.forEach(function (e) {
+          if(list[i].department === e.id) {
+            list[i]["departmentName"] = e.name
+          }
+        })
+      }
+      commit("SET_TEACHER_DATA", response.data.body.data)
+    }).catch(error => {
+      console.log(error)
+    })
+  },
+
+  /**
    * 分页查找教师账号记录
    * @param commit
    * @returns {Promise<void>}
@@ -92,7 +124,7 @@ const actions = {
    */
   async doSave({dispatch, commit}, data) {
     commit("SET_SAVE_LODING", true)
-    await axios.post("/api/v1/teacher/save", {"body":{"data": data}}).then(response => {
+    await axios.post("/api/v1/teacher/save", {"head": {"token": store.state.loginManage.token}, "body":{"data": data}}).then(response => {
       if(response.data.head.responseCode != "200") {
         Notice.error({title: response.data.head.message , desc: ''});
       } else {
@@ -114,7 +146,7 @@ const actions = {
    */
   async doUpdate({dispatch, commit}, data) {
     commit("SET_SAVE_LODING", true)
-    await axios.put("/api/v1/teacher/update", {"body":{"data": data.data}}).then(response => {
+    await axios.put("/api/v1/teacher/update", {"head": {"token": store.state.loginManage.token}, "body":{"data": data.data}}).then(response => {
       if(response.data.head.responseCode != "200") {
         Notice.error({title: response.data.head.message , desc: ''});
       } else {
@@ -135,7 +167,7 @@ const actions = {
    * @returns {Promise<void>}
    */
   async doRemove({dispatch, commit}, data) {
-    await axios.delete("/api/v1/teacher/remove", {data: {"body":{ "data": {"id" : data.id}}}}).then(response => {
+    await axios.delete("/api/v1/teacher/remove", {data: {"head": {"token": store.state.loginManage.token}, "body":{ "data": {"id" : data.id}}}}).then(response => {
       if(response.data.head.responseCode != "200") {
         Notice.error({title: response.data.head.message , desc: ''});
       } else {

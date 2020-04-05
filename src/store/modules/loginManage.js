@@ -4,7 +4,7 @@ import { Notice } from 'view-design';
 
 const state = {
   userName: '',
-  token: "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZW5hbnRfVXNlciIsImV4cCI6MTU4NTk4MjE3MywidXNlck5hbWUiOiJyb290IiwiaWF0IjoxNTg1ODk1NzczLCJ1c2VySWQiOiIxMjMifQ.lJmQCYF4Ir2aKHVzoxif6gUR1Z-anWNtBgYFRckR67w",
+  token: '',
   loginLoding: false
 }
 

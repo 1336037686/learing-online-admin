@@ -11,9 +11,8 @@
     </Breadcrumb>
     <!--操作按钮-->
     <Row style="margin-top: 20px;background:#eee;padding: 20px">
-      <Col span="1" offset="1"><span style="font-size: 20px">筛选:</span></Col>
       <Col span="4">
-        <Input v-model="formItem.selectContent" placeholder="输入关键字"/>
+        <Input v-model="formItem.selectContent" placeholder="输入课程名称"/>
       </Col>
       <Col span="2" style="margin-left: 10px">
         <Button type="primary" @click="search">查找</Button>
@@ -98,6 +97,10 @@
             width: 110,
             render: (h, params) => {
               return h('img', {
+                style:{
+                  width:'100px',
+                  height:'100px',
+                },
                 attrs: {
                   src: params.row.cover,
                 }
@@ -134,10 +137,19 @@
     },
     methods: {
       search() {
-
+        if(this.formItem.selectContent.trim() == "") {
+          this.$store.dispatch("courseManage/doQueryAll", 1)
+        } else {
+          this.$store.dispatch("courseManage/doQueryCondition", {"currentPage": 1, "name": this.formItem.selectContent.trim()})
+        }
       },
       nextPage(index) {
-
+        if(this.formItem.selectContent.trim() == "") {
+          this.$store.dispatch("courseManage/doQueryAll", index)
+        } else {
+          this.$store.dispatch("courseManage/doQueryCondition", {"currentPage": index, "name": this.formItem.selectContent.trim()})
+        }
+        this.currentPage = index
       },
       show (index) {
         let data = this.$store.state.courseManage.courseData.pageInfo.list[index]
