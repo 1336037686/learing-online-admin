@@ -16,8 +16,6 @@ const mutations = {
   SET_LOGIN_LODING:(state, data) => {
     state.loginLoding = data
   }
-
-
 }
 
 const actions = {
@@ -52,7 +50,6 @@ const actions = {
   async doLogout({commit}) {
     commit("SET_DATA", {"userName": '', "token": ''})
   }
-
 }
 
 export default {
