@@ -12,6 +12,8 @@ const mutations = {
   SET_DATA:(state, data) => {
     state.userName = data.userName
     state.token = data.token
+    // 保存基础信息到sessionStorage中
+    sessionStorage.setItem("userInfo", JSON.stringify({"userName": data.userName, "token": data.token}))
   },
   SET_LOGIN_LODING:(state, data) => {
     state.loginLoding = data
